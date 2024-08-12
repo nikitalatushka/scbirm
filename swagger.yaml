@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info: 
+  title: SCBIRM Resource API
+  description: API documentaiton example
+  version: 0.1.0
+paths: 
+  /:
+    get:
+      summary: Returns a greeting
+      responses:
+        200:
+          description: greeting response
+          content: 
+            application/json:
+              schema: 
+                type: string
+                example: Hello World!
