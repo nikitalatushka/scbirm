@@ -7,5 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nikita Latushka",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "swagger-ui-express": "^5.0.1"
+  }
 }
