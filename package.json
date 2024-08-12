@@ -1,0 +1,11 @@
+{
+  "name": "scbirm-resource-api",
+  "version": "0.1.0",
+  "description": "This API returns information about resources in the SimCity BuildIt game.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nikita Latushka",
+  "license": "ISC"
+}
