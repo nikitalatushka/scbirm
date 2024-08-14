@@ -4,12 +4,14 @@
   "description": "This API returns information items in the SimCity:BuildIt game.",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/server.js"
   },
   "author": "Nikita Latushka",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "nodemon": "^3.1.4",
     "swagger-ui-express": "^5.0.1",
     "yamljs": "^0.3.0"
   }
