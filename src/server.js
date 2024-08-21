@@ -1,32 +1,32 @@
- const express = require('express');
+const express = require('express');
+const mysql = require ('mysql');
 const swagger = require('./config/swagger');
-const mariadb = require('./config/mariadb');
+require('dotenv').config();
 
 const app = express();
-const port = 3000;
-
+const port = process.env.PORT || 1337;
 swagger.run(app);
 
 
+// Create a connection pool to the MariaDB 
+// Use dotenv to hide keys from github
+const pool = mysql.createPool({
+    connectionLimit: 5,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+});
 
 
-// Define a route to list all stores
-app.get('/stores', async (req, res) => {
-    let conn;
-    try {
-        // Get a connection from the pool
-        conn = await mariadb.pool.getConnection();
-        // Execute the query
-        const rows = await conn.query("SELECT * FROM store");
-        // Send the rows as JSON response
-        res.json(rows);
-    } catch (err) {
-        console.error('Error fetching stores:', err);
-        res.status(500).json({ error: 'An error occurred while fetching stores' });
-    } finally {
-        // Release the connection back to the pool
-        if (conn) conn.release();
-    }
+app.get('/stores', (req, res) => {
+    pool.getConnection(function(err, connection) {
+        connection.query("SELECT * FROM store", function (error, results, fields) {
+            res.send(results)
+            connection.release();
+        });
+    });
 });
 
 
