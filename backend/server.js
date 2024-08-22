@@ -24,9 +24,29 @@ const pool = mysql.createPool({
 //===========
 app.get('/products', (req, res) => {
     pool.getConnection(function(err, connection) {
-        connection.query("SELECT * FROM product JOIN store ON product.store_id=store.store_ID", function (error, results, fields) {
-            res.send(results)
+
+        // Optional Query Parameters
+        const productName = req.query.productName;
+
+        // SQL query string
+        sql = "SELECT * FROM product JOIN store ON product.store_id=store.store_ID"
+        // If product_name query parameter is provided, modify the SQL query
+        if (productName) {
+            sql += " WHERE product.product_name = ?"
+        }
+        // Run SQL query
+        connection.query(sql, productName ? [productName] : [], (error, results) => {
             connection.release();
+            // Return error if query fails
+            if (error) {
+                return res.status(500).send("Database query error");
+            // Return error is nothing is returned
+            } else if (results.length == 0) {
+                return res.status(404).send("Product not found");
+            // Return results if there are no errors
+            } else {
+                return res.send(results)
+            }
         });
     });
 });
@@ -41,7 +61,7 @@ app.get('/products/:productID', (req, res) => {
     pool.getConnection(function(err, connection) {
         // Return error if connection cannot be established
         if (err) {
-            return res.status(500).send("Server Error: Cannot get connection from pool");
+            return res.status(500).send("Internal Server Error: Cannot get connection from pool");
         }
         // Run SQL query
         connection.query("SELECT * FROM product JOIN store ON product.store_id=store.store_ID WHERE product_ID = " + productID, function (error, results, fields) {
@@ -49,10 +69,10 @@ app.get('/products/:productID', (req, res) => {
             connection.release();
             // Return error if query fails
             if (error) {
-                return res.status(500).send("Database query error");
+                return res.status(500).send("Internal Server Error: Database query error");
             // Return error is nothing is returned
             } else if (results.length == 0) {
-                return res.status(404).send("Product not found");
+                return res.status(404).send("Not found: Requested resource does not exist");
             // Return results if there are no errors
             } else {
                 return res.send(results)
