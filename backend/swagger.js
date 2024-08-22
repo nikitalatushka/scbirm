@@ -1,6 +1,6 @@
 const YAML = require('yamljs');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = YAML.load('./swagger.yaml');
+const swaggerDocument = YAML.load('./config/swagger.yaml');
 
 exports.run = function(app) {
 

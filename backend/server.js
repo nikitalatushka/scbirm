@@ -1,6 +1,6 @@
 const express = require('express');
 const mysql = require ('mysql');
-const swagger = require('./config/swagger');
+const swagger = require('./swagger');
 require('dotenv').config();
 
 // Initialize Express and Swagger Docs
