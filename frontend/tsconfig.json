@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",                         // Specify ECMAScript target version
+      "module": "ESNext",                         // Specify module code generation
+      "jsx": "react",                             // Enable JSX support
+      "moduleResolution": "node",                 // Resolve modules in Node.js style
+      "esModuleInterop": true,                    // Enable compatibility with CommonJS modules
+      "forceConsistentCasingInFileNames": true,   // Ensure consistent file naming
+      "strict": true,                             // Enable all strict type checking options
+      "skipLibCheck": true                        // Skip type checking of declaration files
+    },
+    "include": ["src/**/*"],                      // Include all source files
+    "exclude": ["node_modules", "**/*.test.ts"]   // Exclude test files
+  }
+  
