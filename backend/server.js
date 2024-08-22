@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mysql = require ('mysql');
 const swagger = require('./swagger');
 require('dotenv').config();
@@ -7,6 +8,9 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 1337;
 swagger.run(app);
+
+// Use CORS middleware for running front and backend on different ports
+app.use(cors());
 
 // Create a connection pool to the MariaDB 
 // Use dotenv to hide keys from github
