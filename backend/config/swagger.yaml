@@ -14,21 +14,9 @@ paths:
       summary: List of all products
       description: Returns an array of products. 
       parameters:
-      - name: product_name
+      - name: productName
         in: query
         description: Search by name of the product.
-        required: false
-        schema:
-          type: string
-      - name: product_id
-        in: query
-        description: Search by ID of the product. 
-        required: false
-        schema:
-          type: string
-      - name: store_id
-        in: query
-        description: Search products manufactured at a particular store ID.
         required: false
         schema:
           type: string
@@ -39,8 +27,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'  
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        
   /products/{id}:
     get:
       tags:
@@ -193,8 +186,20 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
+    BadRequest:
+      description: "Bad Request"
+      content: 
+      applicatation/json:
+        schema: 
+          $ref: '#/components/schemas/ErrorResponse'
+        examples:
+          QueryError:
+            value:
+              code: 400
+              message: "Bad Request"
+              details: "Bad Request"  
     NotFound:
-      description: Not Found - Resource Does Not Exist
+      description: "Not Found - Resource Does Not Exist"
       content: 
         application/json:
           schema:
@@ -205,6 +210,18 @@ components:
                   code: 404
                   message: "Not Found"
                   details: "The requested resource could not be found"
+    ServerError:
+      description: "Internal Server Error"
+      content: 
+      applicatation/json:
+        schema: 
+          $ref: '#/components/schemas/ErrorResponse'
+        examples:
+          QueryError:
+            value:
+              code: 500
+              message: "Internal Server Error"
+              details: "Internal Server Error"  
   schemas:
     Store:
       type: object
