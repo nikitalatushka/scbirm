@@ -1,6 +1,6 @@
 // Main component of the application
 import React from 'react';
-//import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Stores from './components/stores';
 import Products from './components/Products';
 import Header from './components/Header';
