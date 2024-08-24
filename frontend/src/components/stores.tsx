@@ -27,13 +27,16 @@ const Stores: React.FC = () => { // defines a 'function component' named Stores 
   }, []);
 
   return (
-    <div className="store-grid">
-      {stores.map(store => (
-        <div key={store.store_ID} className="store-card">
-          <h2>{store.store_name}</h2>
-          <p>{store.description}</p>
-        </div>
-      ))}
+    <div className='stores-view'>
+      <h2>Stores</h2>
+      <div className="store-grid">
+        {stores.map(store => (
+          <div key={store.store_ID} className="store-card">
+            <h3>{store.store_name}</h3>
+            <p>{store.description}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

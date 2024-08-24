@@ -4,14 +4,20 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Stores from './components/stores';
 import Products from './components/Products';
 import Header from './components/Header';
+import Navigation from './components/Navigation';
+import Home from './routes/Home'
 
 const App: React.FC = () => {
     return (
         <Router>
             <div className="app-container">
-                    <Header app_name='SimCity BuildIt: Resouce Manager'/>
-                    <Products />
-                    <Stores />
+                <Header app_name='SimCity BuildIt: Resouce Manager'/>
+                <Navigation />
+                <Routes>
+                    <Route path="/" element={<Home />}/>
+                </Routes>                    
+                <Products />
+                <Stores />
             </div>
         </Router>
     );
