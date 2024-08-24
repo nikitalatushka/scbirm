@@ -2,7 +2,7 @@
   "name": "scbirm-react-frontend",
   "version": "0.1.0",
   "description": "This front end uses the scbirm-resource-api to display content",
-  "main": "./src/index.tsx",
+  "main": "./index.tsx",
   "scripts": {
     "start": "react-scripts start"
   },

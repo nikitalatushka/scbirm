@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchProducts } from '../api';
+import { fetchProductList } from '../hooks';
 
 interface Product {
     product_ID: number;
@@ -12,15 +12,15 @@ interface Product {
 }
 
 const Products: React.FC = () => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProductList] = useState<Product[]>([]);
     
     useEffect(() => {
-        const getProducts = async () => {
-            const data = await fetchProducts(); // gets `data` from API to get a promise from `fetchStores`
-            setProducts(data); // update `store` state 
+        const getProductList = async () => {
+            const data = await fetchProductList(); // gets `data` from API to get a promise from `fetchStores`
+            setProductList(data); // update `store` state 
         };
 
-        getProducts();
+        getProductList();
         
     }, []);
 

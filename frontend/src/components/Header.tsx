@@ -1,12 +1,24 @@
 import React, {useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
-    app_name: string;
+    title: string;
 };
 
-const Header: React.FC<HeaderProps> = ({app_name}) => {
+const Header: React.FC<HeaderProps> = ({title}) => {
     return (
-        <h1>{app_name}</h1>
+        <div className="header">
+            <h1 className="title">{title}</h1>
+            <div className="navbar">
+                <nav>
+                    <ul>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/products">Products</Link></li>
+                        <li><Link to="/stores">Stores</Link></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     );
 };
 

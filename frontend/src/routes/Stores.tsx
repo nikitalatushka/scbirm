@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchStores } from '../api';
+import { fetchStoreList } from '../hooks';
 
 // Defines the structure/shape of Store <object>
 // The object's properties and methods
@@ -14,16 +14,16 @@ interface Store {
 // let: when it can be changed
 
 
-const Stores: React.FC = () => { // defines a 'function component' named Stores with no properties (props) 
+const StoreList: React.FC = () => { // defines a 'function component' named Stores with no properties (props) 
   // Initializes a state variable stores as an empty array of Store objects.
   //`setStores` is the function used to update this state.
-  const [stores, setStores] = useState<Store[]>([]); // useState<>() == hook
+  const [stores, setStoreList] = useState<Store[]>([]); // useState<>() == hook
   useEffect(() => { // init a hook that runs side effects in the functional component
-    const getStores = async () => { // async function `getStores` fetches data from the api
-      const data = await fetchStores(); // gets `data` from API to get a promise from `fetchStores`
-      setStores(data); // update `store` state  
+    const getStoreList = async () => { // async function `getStores` fetches data from the api
+      const data = await fetchStoreList(); // gets `data` from API to get a promise from `fetchStores`
+      setStoreList(data); // update `store` state  
     };
-    getStores(); // invoke the side effect hook, fetch data from api
+    getStoreList(); // invoke the side effect hook, fetch data from api
   }, []);
 
   return (
@@ -41,4 +41,4 @@ const Stores: React.FC = () => { // defines a 'function component' named Stores 
   );
 };
 
-export default Stores;
+export default StoreList;
