@@ -1,13 +1,19 @@
 // Main component of the application
 import React from 'react';
-import Stores from './stores';
+//import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Stores from './components/stores';
+import Products from './components/Products';
+import Header from './components/Header';
 
 const App: React.FC = () => {
     return (
-        <div className="app-container">
-            <h1> Stores </h1>
-                <Stores />
-        </div>
+        <Router>
+            <div className="app-container">
+                    <Header app_name='SimCity BuildIt: Resouce Manager'/>
+                    <Products />
+                    <Stores />
+            </div>
+        </Router>
     );
 };
 
