@@ -1,10 +1,10 @@
 // Main component of the application
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Stores from './components/stores';
-import Products from './components/Products';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
+import Stores from './routes/Stores';
+import Products from './routes/Products';
 import Home from './routes/Home'
 
 const App: React.FC = () => {
@@ -15,9 +15,9 @@ const App: React.FC = () => {
                 <Navigation />
                 <Routes>
                     <Route path="/" element={<Home />}/>
+                    <Route path="/products" element={<Products />}></Route>
+                    <Route path="/stores" element={<Stores />}></Route>
                 </Routes>                    
-                <Products />
-                <Stores />
             </div>
         </Router>
     );

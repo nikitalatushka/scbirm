@@ -27,7 +27,7 @@ const Stores: React.FC = () => { // defines a 'function component' named Stores 
   }, []);
 
   return (
-    <div className='stores-view'>
+    <div className='route-stores'>
       <h2>Stores</h2>
       <div className="store-grid">
         {stores.map(store => (

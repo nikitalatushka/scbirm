@@ -2,8 +2,8 @@ import React from "react";
 
 const Home: React.FC = () => {
     return (
-        <div className="home-route"></div>
-    )
-}
+        <div className="route-home"></div>
+    );
+};
 
 export default Home;
