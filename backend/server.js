@@ -23,9 +23,8 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,
 });
 
-//-----------
 // ROUTES 
-//===========
+
 app.get('/products', (req, res) => {
     pool.getConnection(function(err, connection) {
 
@@ -33,7 +32,14 @@ app.get('/products', (req, res) => {
         const productName = req.query.productName;
 
         // SQL query string
-        sql = "SELECT product_ID as ID, product_name as name, production_time as time, sale_value as value, level_unlocked as level, store_ID as store FROM product"
+        sql = `SELECT 
+        product_ID as ID, 
+        product_name as name, 
+        production_time as time, 
+        sale_value as value, 
+        level_unlocked as level, 
+        store_ID as store 
+        FROM product`
         // If product_name query parameter is provided, modify the SQL query
         if (productName) {
             sql += " WHERE product.product_name = ?"
@@ -83,13 +89,55 @@ app.get('/products/:productID', (req, res) => {
             // Return error if query fails
             if (error) {
                 return res.status(500).send("Internal Server Error: Database query error");
-            // Return error is nothing is returned
-            } else if (results.length == 0) {
-                return res.status(404).send("Not found: Requested resource does not exist");
-            // Return results if there are no errors
-            } else {
-                return res.send(results)
             }
+
+                // Return error is nothing is returned
+            if (results.length == 0) {
+                return res.status(404).send("Not found: Requested resource does not exist");
+            }
+            
+            const processedResults = [];
+            const queries = [];
+
+            results.forEach(result => {
+                const storeID = result.store;
+                let query;
+                let params;
+                
+                query = `
+                SELECT
+                store_ID as ID,
+                store_name as name,
+                description,
+                level_unlocked as level
+                FROM store
+                WHERE store_ID = ?`;
+                params = [storeID];
+
+                 // Collect queries to run in parallel
+                 queries.push(new Promise((resolve, reject) => {
+                    connection.query(query, params, (err, rows) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        if (rows.length === 0) {
+                            return reject(new Error("Store not found"));
+                        }
+                        // Add to processed results
+                        processedResults.push({
+                            // TODO: how do I make sure ID references product not store
+                            ID: result.ID,
+                            name: result.name,
+                            time: result.time,
+                            value: result.value,
+                            level: result.level,
+                            store: rows[0]
+                        });
+                        resolve();
+                    });
+                }));
+
+            });
         });
     });
 });
@@ -203,8 +251,35 @@ app.get('/products/:productID/recipe', (req, res) => {
 app.get('/materials', (req, res) => {
     pool.getConnection(function(err, connection) {
         connection.query("SELECT * FROM material", function (error, results, fields) {
-            res.send(results);
-            connection.release();
+            
+            const materialName = req.query.materialName;
+            
+            sql = `SELECT
+            material_ID AS ID,
+            material_name AS name,
+            production_time AS time,
+            sale_value AS value,
+            level_unlocked AS level,
+            store_ID as store
+            FROM material`
+
+            if (materialName) {
+                sql += " WHERE material.material_name = ?"
+            }
+
+            connection.query(sql, materialName ? [materialName] : [], (error, results) => {
+                
+                connection.release();
+                
+                if (error) {
+                    return res.status(500).send("Database query error");
+                } else if (results.length == 0) {
+                    return res.status(404).send("Product not found");
+                } else {
+
+                    return res.send(results)
+                }
+            });
         });
     });
 });
