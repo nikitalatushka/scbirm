@@ -226,75 +226,25 @@ components:
     Store:
       type: object
       properties:
-        store_id:
+        ID:
           type: integer
           example: 3001
-        store_name:
+        name:
           type: string
           example: Building Supplies Store
-        store_description:
+        description:
           type: string
           example: Provides building materials and supplies for Sims.
-        store_level:
-          type: integer
-          example: 1
-    Ingredient:
-      type: object
-      properties:
-        product_id: 
-          type: integer
-          example: 2001
-        product_name: 
-          type: string
-          example: Nail
-        material_id:
-          type: integer
-          example: 1001
-        material_name: 
-          type: string
-          example: Metal
-        subassembly_id:
-          type: integer
-          example: null
-        subassembly_name: 
-          type: string
-          example: null
-        count: 
-          type: integer
-          example: 1
-    Product:
-      type: object
-      properties:
-        product_id:
-          type: integer
-          example: 2001
-        product_name:
-          type: string 
-          example: Nail
-        time:
-          type: integer
-          format: minutes
-          example: 5
-        value:
-          type: integer
-          format: simeloneons
-          example: 80
         level:
           type: integer
           example: 1
-        store_id:
-          type: integer
-          example: 3001
-        store_name:
-          type: string
-          example: Building Supplies Store
     Material:
       type: object
       properties:
-        material_id:
+        ID:
           type: integer
           example: 1001
-        material_name:
+        name:
           type: string 
           example: Metal
         time:
@@ -308,12 +258,47 @@ components:
         level:
           type: integer
           example: 1
-        store_id:
+        store:
+          $ref: '#/components/schemas/Store'
+    Product:
+      type: object
+      properties:
+        ID:
           type: integer
-          example: 3021
-        store_name:
+          example: 2001
+        name:
+          type: string 
+          example: Nail
+        time:
+          type: integer
+          format: minutes
+          example: 5
+        value:
+          type: integer
+          format: simeloneons
+          example: 80
+        level:
+          type: integer
+          example: 1
+        store:
+          $ref: '#/components/schemas/Store'
+    Ingredient:
+      type: object
+      properties:
+        ID: 
+          type: integer
+          example: 2001
+        name: 
           type: string
-          example: Factory
+          example: Nail
+    Recipe:
+      type: object
+      properties:
+        count: 
+          type: integer
+          example: 2
+        ingredient:
+          $ref: '#/components/schemas/Ingredient'
     ErrorResponse:
       type: object
       properties: 
