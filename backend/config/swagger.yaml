@@ -291,6 +291,10 @@ components:
         name: 
           type: string
           example: Nail
+        type:
+          type: string
+          enum: ['product', 'material']
+          example: 'product'
     Recipe:
       type: object
       properties:

@@ -33,7 +33,7 @@ app.get('/products', (req, res) => {
         const productName = req.query.productName;
 
         // SQL query string
-        sql = "SELECT * FROM product JOIN store ON product.store_id=store.store_ID"
+        sql = "SELECT product_ID as ID, product_name as name, production_time as time, sale_value as value, level_unlocked as level, store_ID as store FROM product"
         // If product_name query parameter is provided, modify the SQL query
         if (productName) {
             sql += " WHERE product.product_name = ?"
@@ -68,7 +68,16 @@ app.get('/products/:productID', (req, res) => {
             return res.status(500).send("Internal Server Error: Cannot get connection from pool");
         }
         // Run SQL query
-        connection.query("SELECT * FROM product JOIN store ON product.store_id=store.store_ID WHERE product_ID = " + productID, function (error, results, fields) {
+        connection.query(`
+            SELECT 
+            product_ID as ID, 
+            product_name as name, 
+            production_time as time, 
+            sale_value as value, 
+            level_unlocked as level, 
+            store_ID as store 
+            FROM product 
+            WHERE product_ID = ` + productID, function (error, results, fields) {
             // Release DB connection after running query
             connection.release();
             // Return error if query fails
@@ -98,19 +107,95 @@ app.get('/products/:productID/recipe', (req, res) => {
             return res.status(500).send("Server Error: Cannot get connection from pool");
         }
         // Run SQL query
-        connection.query("SELECT count, subassembly_name, material_name FROM recipe LEFT JOIN material ON recipe.material_id = material.material_ID LEFT JOIN subassembly ON recipe.subassembly_id = subassembly.subassembly_ID WHERE recipe.product_id = " + productID, function (error, results, fields) {
+        connection.query(`
+            SELECT count, 
+            COALESCE(subassembly.product_id, material.material_ID) as ingredient 
+            FROM recipe 
+            LEFT JOIN material ON recipe.material_id = material.material_ID 
+            LEFT JOIN subassembly ON recipe.subassembly_id = subassembly.subassembly_ID 
+            WHERE recipe.product_id = `  + productID, function (error, results, fields) {
             // Release DB connection after running query
             connection.release();
+
             // Return error if query fails
             if (error) {
                 return res.status(500).send("Database query error");
-            // Return error is nothing is returned
-            } else if (results.length == 0) {
-                return res.status(404).send("Product not found");
-            // Return results if there are no errors
-            } else {
-                return res.send(results)
             }
+
+            // Check if results is undefined or not an array
+            if (!Array.isArray(results)) {
+                console.error("Unexpected results format:", results);
+                return res.status(500).send("Unexpected results format");
+            }
+
+            // Return error is nothing is returned
+            if (results.length == 0) {
+                return res.status(404).send("Product not found");
+            }
+
+            // Process the results:
+            // A `count` and an `ingredient` ID is returned by the query
+            // Determine ingredient type with value ranges of ID   
+            // Run queries for either `product` or `materials` table
+            // Collect queries in an array and execute them in parallel using `Promise.all`
+            // Format the results according to schema and send in response
+            const processedResults = [];
+            const queries = [];
+
+            results.forEach(result => {
+                const ingredientID = result.ingredient;
+                let query;
+                let params;
+                let type;
+
+                // Determine ingredient type with value ranges of ID                
+                if (ingredientID >= 2000 && ingredientID <= 2999) { // then it is a product
+                    query = `
+                    SELECT product_ID AS ID, product_name AS name
+                    FROM product
+                    WHERE product_ID =  ?`;
+                    params = [ingredientID];
+                    type = 'product';
+                } else if (ingredientID >= 1000 && ingredientID <=1999) { // then it is a material
+                    query = `
+                    SELECT material_ID AS ID, material_name AS name
+                    FROM material
+                    WHERE material_ID =  ?`;
+                    params = [ingredientID];
+                    type = 'material';
+                } else {
+                    return res.status(400).send("Bad Data: Invalid ingredient ID");
+                }
+                
+                 // Collect queries to run in parallel
+                 queries.push(new Promise((resolve, reject) => {
+                    connection.query(query, params, (err, rows) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        if (rows.length === 0) {
+                            return reject(new Error("Ingredient not found"));
+                        }
+                        // Add to processed results
+                        processedResults.push({
+                            count: result.count,
+                            ingredient: {
+                                ...rows[0], // Spread the ingredient properties
+                                type: type  // Add type to ingredient
+                            }
+                        });
+                        resolve();
+                    });
+                }));
+            });
+
+            // Run all queries in parallel and return the results
+            Promise.all(queries)
+                .then(() => res.send(processedResults))
+                .catch(err => {
+                    console.error("Error processing queries:", err);
+                    res.status(500).send("Database query error");
+                });
         });
     });
 });
