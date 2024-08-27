@@ -228,7 +228,7 @@ components:
       properties:
         ID:
           type: integer
-          example: 3001
+          example: 4001
         name:
           type: string
           example: Building Supplies Store

@@ -1,6 +1,7 @@
-# Node.js & NPM
+# Node.js & Package Managers
 node_modules/
 package-lock.json
+yarn.lock
 
 # Environment variables
 .env*
