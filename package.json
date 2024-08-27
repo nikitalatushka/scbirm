@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@types/jest": "^29.5.12",
+    "@types/mysql": "^2.15.26",
     "bcrypt": "^5.1.1",
     "config": "^3.3.12",
     "cors": "^2.8.5",
