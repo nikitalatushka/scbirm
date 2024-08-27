@@ -7,7 +7,7 @@
   "author": "Nikita Latushka <151414800+nikitalatushka@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "test": "jest",
     "build": "tsc"
   },
