@@ -1,0 +1,14 @@
+# Node.js & NPM
+node_modules/
+@types/
+package-lock.json
+
+# Environment variables
+.env*
+
+# Editor directories and files
+.idea/
+.vscode/
+
+# macOS files
+.DS_Store

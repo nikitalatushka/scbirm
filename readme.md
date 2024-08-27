@@ -5,3 +5,20 @@ SimCity BuildIt is a mobile game that requires a player to manufacture products 
 ## Problem Statements
 - HMW save user time by with keeping track of required products for easy reference?
 - HMW eliminate supply chain issues by providing the player with a count of required raw materials?
+
+## Starting Fresh
+
+```console
+npm install --global yarn
+```
+
+```console
+yarn init
+```
+
+```console 
+npx tsc --init
+```
+
+### Create 
+yarn install express
