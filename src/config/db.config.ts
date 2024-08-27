@@ -5,11 +5,12 @@ import dotenv from 'dotenv';
 dotenv.config()
 
 export const 
-    host = process.env.DB_HOST,
-    port = process.env.DB_PORT,
-    user = process.env.DB_USER,
-    pwd = process.env.DB_PWD,
-    name = process.env.DB_NAME;
+    host = String(process.env.DB_HOST),
+    port = Number(process.env.DB_PORT),
+    user = String(process.env.DB_USER),
+    pwd = String(process.env.DB_PWD),
+    name = String(process.env.DB_NAME);
 
-
+// [TYPECASTING](https://blog.logrocket.com/how-to-perform-type-casting-typescript/)
+// is this ok to do?
 
