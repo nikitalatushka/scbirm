@@ -1,0 +1,314 @@
+openapi: 3.0.0
+info:
+  title: SCBIRM Resources API
+  description: |-
+    This API uses a REST based design, leverages JSON data format, and relies upon HTTPS for transport. Express.js is used as the back end up application framework for building this RESTful API with Node.js. Swagger is used for documentation and design. It provides endpoints to a MariaDB instance that has information about resources in the Sim City Build It game. 
+  version: 1.0.0
+servers:
+  - url: https://scbirm.servme.cc/resources/v1
+paths:
+  /products:
+    get:
+      tags:
+        - products
+      summary: List of all products
+      description: Returns an array of products. 
+      parameters:
+      - name: productName
+        in: query
+        description: Search by name of the product.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'  
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        
+  /products/{id}:
+    get:
+      tags:
+      - products
+      summary: Single product
+      description: Returns a product object. 
+      parameters:
+      - name: id
+        in: path
+        description: product_id
+        required: true        
+        schema: 
+          type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product' 
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /products/{id}/recipe:
+    get:
+      tags:
+      - products
+      summary: Product recipe
+      description: Returns an array of ingredients used to manufacture this product.
+      parameters:
+      - name: id
+        in: path
+        description: product_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Ingredient' 
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /materials:
+    get:
+      tags:
+      - materials
+      summary: List of all materials
+      description: Returns an array of materials.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Material' 
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /materials/{id}:
+    get:
+      tags:
+      - materials
+      summary: Single material
+      description: Single material
+      parameters:
+      - name: id
+        in: path
+        description: material_id
+        required: true        
+        schema: 
+          type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Material' 
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /materials/{id}/recipe:
+    get:
+      tags:
+      - materials
+      summary: Products made with material
+      description: Products made with material
+      parameters:
+      - name: id
+        in: path
+        description: materials_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient' 
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /stores:
+    get:
+      tags:
+      - stores
+      summary: List all stores
+      description: Returns an array of stores. 
+      responses:
+        '200':
+          description: Successful operation
+          content: 
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Store'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /stores/{id}/products:
+    get:
+      tags:
+      - stores
+      summary: List of products produced by store
+      description: List of products produced by store
+      parameters:
+      - name: id
+        in: path
+        description: store_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content: 
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    BadRequest:
+      description: "Bad Request"
+      content: 
+      applicatation/json:
+        schema: 
+          $ref: '#/components/schemas/ErrorResponse'
+        examples:
+          QueryError:
+            value:
+              code: 400
+              message: "Bad Request"
+              details: "Bad Request"  
+    NotFound:
+      description: "Not Found - Resource Does Not Exist"
+      content: 
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+              NotFound:
+                value:
+                  code: 404
+                  message: "Not Found"
+                  details: "The requested resource could not be found"
+    ServerError:
+      description: "Internal Server Error"
+      content: 
+      applicatation/json:
+        schema: 
+          $ref: '#/components/schemas/ErrorResponse'
+        examples:
+          QueryError:
+            value:
+              code: 500
+              message: "Internal Server Error"
+              details: "Internal Server Error"  
+  schemas:
+    Store:
+      type: object
+      properties:
+        ID:
+          type: integer
+          example: 3001
+        name:
+          type: string
+          example: Building Supplies Store
+        description:
+          type: string
+          example: Provides building materials and supplies for Sims.
+        level:
+          type: integer
+          example: 1
+    Material:
+      type: object
+      properties:
+        ID:
+          type: integer
+          example: 1001
+        name:
+          type: string 
+          example: Metal
+        time:
+          type: integer
+          format: minutes
+          example: 1
+        value:
+          type: integer
+          format: simeloneons
+          example: 10
+        level:
+          type: integer
+          example: 1
+        store:
+          $ref: '#/components/schemas/Store'
+    Product:
+      type: object
+      properties:
+        ID:
+          type: integer
+          example: 2001
+        name:
+          type: string 
+          example: Nail
+        time:
+          type: integer
+          format: minutes
+          example: 5
+        value:
+          type: integer
+          format: simeloneons
+          example: 80
+        level:
+          type: integer
+          example: 1
+        store:
+          $ref: '#/components/schemas/Store'
+    Ingredient:
+      type: object
+      properties:
+        ID: 
+          type: integer
+          example: 2001
+        name: 
+          type: string
+          example: Nail
+        type:
+          type: string
+          enum: ['product', 'material']
+          example: 'product'
+    Recipe:
+      type: object
+      properties:
+        count: 
+          type: integer
+          example: 2
+        ingredient:
+          $ref: '#/components/schemas/Ingredient'
+    ErrorResponse:
+      type: object
+      properties: 
+        code: 
+          type: integer
+        message: 
+          type: string
+        details:
+          type: string
