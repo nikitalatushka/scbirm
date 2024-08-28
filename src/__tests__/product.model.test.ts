@@ -1,9 +1,9 @@
 import { describe } from 'node:test'
-import { IProduct } from '../models/product.model'
+import { IProductModel } from '../models/product.model'
 
 // test create an object based on an interface file definition in TS
 describe("given a typed object is declared with let and an interface", () => {
-    let productA = {} as IProduct; // this type of declaration allows for undefined properties
+    let productA = {} as IProductModel; // this type of declaration allows for undefined properties
     productA.ID = 2001;
     it("should return object properties", () => {
         expect(productA.ID).toBe(2001);
@@ -17,7 +17,7 @@ describe("given a typed object is declared with let and an interface", () => {
 //[How to write test cases in typescript(https://bootcamp.uxdesign.cc/how-to-write-test-cases-in-typescript-fa7a263b7833)
 
 describe("given a typed object declared with constant and an interface", () => {
-    const productB: IProduct = { // have to define all properties using this declaration
+    const productB: IProductModel = { // have to define all properties using this declaration
         ID: 2001,
         name: 'Nail',
         time: 5,

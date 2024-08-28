@@ -1,8 +1,8 @@
 import { describe } from 'node:test'
-import { IProduct } from '../models/product.model'
+import { IProductModel } from '../models/product.model'
 
 describe('Product', () => {
-    const product: IProduct = {
+    const product: IProductModel = {
         ID: 2001,
         name: 'Nail',
         time: 5,

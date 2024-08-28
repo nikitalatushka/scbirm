@@ -11,7 +11,7 @@ TypeScript has 2 ways to achieve this:
 */
 
 // create model class for a product
-export interface IProduct {
+export interface IProductModel {
     ID: number;
     name: string;
     time: number;
