@@ -16,7 +16,7 @@ describe('Product', () => {
 describe('getProductById({ productId })', () => {
     describe('given an input of productId<number>', (productId) => {
         it('should return a single product, not an array of products', () => {
-            expect(Array.isArray()).toBe(false);
+            expect(Array.isArray(productId)).toBe(false);
         });
         it('should return an instance of IProduct', () => {});
     });
