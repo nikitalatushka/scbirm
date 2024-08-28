@@ -10,11 +10,11 @@ describe("given a typed object is declared with let and an interface", () => {
         expect(typeof productA.ID).toBe('number');
         expect(productA.name == undefined).toBe(true);
         expect(typeof productA).toBe('object');
-        //https://stackoverflow.com/questions/62564800/how-to-assert-data-type-with-jest
+        //[How to assert data type with Jest](https://stackoverflow.com/questions/62564800/how-to-assert-data-type-with-jest)
             
     });
 }); 
-//https://bootcamp.uxdesign.cc/how-to-write-test-cases-in-typescript-fa7a263b7833
+//[How to write test cases in typescript(https://bootcamp.uxdesign.cc/how-to-write-test-cases-in-typescript-fa7a263b7833)
 
 describe("given a typed object declared with constant and an interface", () => {
     const productB: IProduct = { // have to define all properties using this declaration
