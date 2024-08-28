@@ -33,3 +33,4 @@ TypeScript has 2 ways to achieve this:
 
   > [Creating model classes: Type vs Interface]((https://stackoverflow.com/questions/35453630/creating-model-classes-in-typescript))
 
+> [when to use export const vs export default](https://stackoverflow.com/questions/36866718/when-to-use-export-default-and-export-constant-in-javascript)

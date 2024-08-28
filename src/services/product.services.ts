@@ -1,11 +1,15 @@
 import { IProductModel } from '../models/product.model'
 import { IDModel } from '../models/id.model'
-import { } from '../config/mariadb.pool'
+import { pool } from '../config/mariadb.pool'
 
 
 export async function findProductById ( 
     input: IDModel,
     output: IProductModel
  ) {
-    return output
+    const product_ID = input;
+
+    // map mysql query response to IProductModel type
+    const 
+    return output;
 }
