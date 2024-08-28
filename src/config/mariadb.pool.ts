@@ -15,7 +15,7 @@ const db_config = {
 }
 
 // create pool
-const pool = mysql.createPool(
+export const pool = mysql.createPool(
     db_config
 )
 
@@ -31,5 +31,3 @@ pool.on('close', function (err) {
 });
 
 
-module.exports = pool;
-//https://www.sitepoint.com/understanding-module-exports-exports-node-js
