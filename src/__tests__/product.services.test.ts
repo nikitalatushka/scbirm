@@ -1,6 +1,5 @@
 import { describe } from 'node:test'
 import { IProduct } from '../models/product.model'
-import { array } from 'zod';
 
 describe('Product', () => {
     const product: IProduct = {

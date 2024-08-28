@@ -1,5 +1,5 @@
 import { describe } from 'node:test'
-import { IProduct } from '../product.model'
+import { IProduct } from '../models/product.model'
 
 // test create an object based on an interface file definition in TS
 describe("given a typed object is declared with let and an interface", () => {

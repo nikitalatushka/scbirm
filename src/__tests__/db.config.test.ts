@@ -1,5 +1,5 @@
 import { describe } from 'node:test'
-import * as db from '../db.config'
+import * as db from '../config/db.config'
 
 describe('given properties are declared individually', () => {
     const db_host = db.host;

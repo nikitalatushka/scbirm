@@ -1,5 +1,5 @@
 import { describe } from 'node:test'
-import * as local from '../local.config'
+import * as local from '../config/local.config'
 
 describe("given a port is declared using dotenv", () => {
     const port = local.default.port;
